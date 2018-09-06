@@ -27,7 +27,6 @@ class ItemTableViewCell: UITableViewCell {
     
     func set(text: String, isCompleted: Bool) {
         
-        accessoryType = isCompleted ? .checkmark : .none
         backgroundColor = isCompleted ? UIColor.white.withAlphaComponent(0.3) : .white
         
         label.attributedText = NSAttributedString(string: text,
