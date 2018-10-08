@@ -84,7 +84,7 @@ class TodoListViewController: UITableViewController {
 // MARK: - TextFieldViewDelegate Extension
 extension TodoListViewController: TextFieldViewDelegate {
     func textField(didEnter text: String) {
-        let item = Item(title: text)
+        let item = Item(title: text, record: nil)
         todos.items.append(item)
         let newIndex = IndexPath(row: todos.items.count-1, section: 0)
         tableView.beginUpdates()
