@@ -7,20 +7,20 @@ class CloudKitService {
     let privateDb: CKDatabase
     
     init() {
-        publicDb = defaultContainer.publicCloudDatabase
-        privateDb = defaultContainer.privateCloudDatabase
+        publicDb    = defaultContainer.publicCloudDatabase
+        privateDb   = defaultContainer.privateCloudDatabase
     }
     
-    public func save(record: CKRecord, completion: @escaping (CKRecord) -> ()) {
+    public func save(record: CKRecord,
+                     success: @escaping (CKRecord) -> (),
+                     failure: @escaping (Error) -> ()) {
+        
         privateDb.save(record) { (record, error) in
-            guard let record = record else {
-                print(error)
+            guard let record = record, error == nil else {
+                failure(error!)
                 return
             }
-            completion(record)
+            success(record)
         }
-    }
-    
-    public func update() {
     }
 }

@@ -1,47 +1,54 @@
 import Foundation
 import CloudKit
 
-class Item: Codable {
+class Item {
     let title: String
-    var recordName: String?
-    var isComplete: Bool
-    var record: CKRecord
-    
+    var record: CKRecord?
+    var isComplete: Bool {
+        didSet { serialize() }
+    }
+
     init(title: String, isComplete: Bool = false, record: CKRecord?) {
-        self.title = title
+        self.title      = title
         self.isComplete = isComplete
-        if let record   = record {
-            self.record = record
-        } else {
-            self.record                 = CKRecord(recordType: "item")
-            self.record["title"]        = self.title
-            self.record["isComplete"]   = self.isComplete
-        }
-    }
-    
-    public func save() {
-        CloudKitService.init().save(record: record) { (record) in
-            self.record     = record
-            self.recordName = record.recordID.recordName
-        }
-    }
-    
-    // MARK: - Codable
-    private enum CodingKeys: String, CodingKey {
-        case title
-        case isComplete
+        self.record     = record
+        serialize()
     }
     
     required init(from decoder: Decoder) throws {
         let container   = try decoder.container(keyedBy: CodingKeys.self)
         title           = try container.decode(String.self, forKey: .title)
         isComplete      = try container.decode(Bool.self, forKey: .isComplete)
-        
-        self.record                 = CKRecord(recordType: "item")
-        self.record["title"]        = self.title
-        self.record["isComplete"]   = self.isComplete
+    }
+}
+
+// MARK: - Serialization
+extension Item: Serializable {
+    func serialize() {
+        CloudKitService.init().save(record: buildRecord(), success: { (record) in
+                self.record = record
+        }, failure: {(error) in
+            print(error)
+        })
+    }
+
+    func buildRecord() -> CKRecord {
+        let record = self.record == nil ? CKRecord(recordType: "item") : self.record!
+        record["isComplete"]    = isComplete ? 0 : 1
+        record["title"]         = title
+        return record
     }
     
+    
+}
+
+// MARK: - Codable
+extension Item: Codable {
+    private enum CodingKeys: String, CodingKey {
+        case title
+        case isComplete
+    }
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(title, forKey: .title)
