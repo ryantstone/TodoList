@@ -4,7 +4,9 @@ class TodoListViewController: UITableViewController {
 
     // MARK: - Properties
     private lazy var todos: Todos = {
-        return Todos.load()
+        let todos = Todos(items: Todos.load().items)
+        let remotes = todos.loadRemote()
+        return todos
     }()
     
     private lazy var footer: TextFieldView = {

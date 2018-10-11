@@ -7,6 +7,7 @@ struct Todos: Codable {
 
     init(items: [Item]) {
         self.items = items
+        loadRemote()
     }
 }
 //NOTE: UserDefaults is a temporary solution
@@ -24,5 +25,21 @@ extension Todos {
             }
         }
         return Todos(items: [])
+    }
+    
+    func loadRemote() {
+        let cloudKitService = CloudKitService()
+        let group = DispatchGroup()
+        items.forEach { (item) in
+            group.enter()
+            guard let name = item.recordName else { return }
+            cloudKitService.getRecord(name: name, success: { (record) in
+                print(record)
+                group.leave()
+            }, failure: { (error) in
+                print(error)
+                group.leave()
+            })
+        }
     }
 }

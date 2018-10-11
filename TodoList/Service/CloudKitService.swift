@@ -6,6 +6,7 @@ class CloudKitService {
     let publicDb: CKDatabase
     let privateDb: CKDatabase
     
+    
     init() {
         publicDb    = defaultContainer.publicCloudDatabase
         privateDb   = defaultContainer.privateCloudDatabase
@@ -16,6 +17,19 @@ class CloudKitService {
                      failure: @escaping (Error) -> ()) {
         
         privateDb.save(record) { (record, error) in
+            guard let record = record, error == nil else {
+                failure(error!)
+                return
+            }
+            success(record)
+        }
+    }
+    
+    public func getRecord(name: String,
+                          success: @escaping (CKRecord) -> (),
+                          failure: @escaping (Error) -> ()) {
+        let record = CKRecordID(recordName: name)
+        privateDb.fetch(withRecordID: record) { (record, error) in
             guard let record = record, error == nil else {
                 failure(error!)
                 return
