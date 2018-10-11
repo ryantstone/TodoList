@@ -13,6 +13,10 @@
 		2C677E78213DDE6A00BEAF40 /* UITableViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C677E75213DDE6A00BEAF40 /* UITableViewExtensions.swift */; };
 		2C677E7A213DE3DB00BEAF40 /* TextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C677E79213DE3DB00BEAF40 /* TextFieldView.swift */; };
 		2C677E7C213DE3E600BEAF40 /* TextFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C677E7B213DE3E600BEAF40 /* TextFieldView.xib */; };
+		692CB2752166F4CD0032EC7E /* CloudKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692CB2742166F4CD0032EC7E /* CloudKitService.swift */; };
+		69775369216AE481004C79AF /* Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69775368216AE481004C79AF /* Serializable.swift */; };
+		698847E421700D2A003DF21C /* ckNamed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698847E321700D2A003DF21C /* ckNamed.swift */; };
+		69D8654C2166E93F00BEB59E /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69D8654B2166E93F00BEB59E /* CloudKit.framework */; };
 		A5142CCC2144ABDD002150BB /* NSObjectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5142CCB2144ABDD002150BB /* NSObjectExtensions.swift */; };
 		A7E81039214B133D00E16B45 /* Todos.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E81038214B133D00E16B45 /* Todos.swift */; };
 		D341523C2138AA9C0009D874 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D341523B2138AA9C0009D874 /* AppDelegate.swift */; };
@@ -29,6 +33,11 @@
 		2C677E75213DDE6A00BEAF40 /* UITableViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewExtensions.swift; sourceTree = "<group>"; };
 		2C677E79213DE3DB00BEAF40 /* TextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldView.swift; sourceTree = "<group>"; };
 		2C677E7B213DE3E600BEAF40 /* TextFieldView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldView.xib; sourceTree = "<group>"; };
+		692CB2742166F4CD0032EC7E /* CloudKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitService.swift; sourceTree = "<group>"; };
+		69775368216AE481004C79AF /* Serializable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Serializable.swift; sourceTree = "<group>"; };
+		698847E321700D2A003DF21C /* ckNamed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ckNamed.swift; sourceTree = "<group>"; };
+		69D865492166E8EC00BEB59E /* TodoList.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TodoList.entitlements; sourceTree = "<group>"; };
+		69D8654B2166E93F00BEB59E /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		A5142CCB2144ABDD002150BB /* NSObjectExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObjectExtensions.swift; sourceTree = "<group>"; };
 		A7E81038214B133D00E16B45 /* Todos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todos.swift; sourceTree = "<group>"; };
 		D34152382138AA9C0009D874 /* TodoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TodoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -45,6 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				69D8654C2166E93F00BEB59E /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,11 +109,37 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		692CB2732166F4B90032EC7E /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				692CB2742166F4CD0032EC7E /* CloudKitService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		69775367216AE472004C79AF /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				69775368216AE481004C79AF /* Serializable.swift */,
+				698847E321700D2A003DF21C /* ckNamed.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		69D8654A2166E93F00BEB59E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				69D8654B2166E93F00BEB59E /* CloudKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D341522F2138AA9C0009D874 = {
 			isa = PBXGroup;
 			children = (
 				D341523A2138AA9C0009D874 /* TodoList */,
 				D34152392138AA9C0009D874 /* Products */,
+				69D8654A2166E93F00BEB59E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -118,6 +154,9 @@
 		D341523A2138AA9C0009D874 /* TodoList */ = {
 			isa = PBXGroup;
 			children = (
+				69775367216AE472004C79AF /* Protocols */,
+				692CB2732166F4B90032EC7E /* Service */,
+				69D865492166E8EC00BEB59E /* TodoList.entitlements */,
 				2C677E72213DDE5C00BEAF40 /* Extensions */,
 				2C677E6A213DDCA400BEAF40 /* Models */,
 				2C677E6C213DDCC000BEAF40 /* View Controllers */,
@@ -160,6 +199,17 @@
 				TargetAttributes = {
 					D34152372138AA9C0009D874 = {
 						CreatedOnToolsVersion = 9.4.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -206,8 +256,11 @@
 				A5142CCC2144ABDD002150BB /* NSObjectExtensions.swift in Sources */,
 				D341524E2138B1090009D874 /* TodoListViewController.swift in Sources */,
 				D34152502138B61C0009D874 /* Item.swift in Sources */,
+				69775369216AE481004C79AF /* Serializable.swift in Sources */,
+				698847E421700D2A003DF21C /* ckNamed.swift in Sources */,
 				D341523C2138AA9C0009D874 /* AppDelegate.swift in Sources */,
 				2C677E77213DDE6A00BEAF40 /* UIViewExtensions.swift in Sources */,
+				692CB2752166F4CD0032EC7E /* CloudKitService.swift in Sources */,
 				A7E81039214B133D00E16B45 /* Todos.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -344,13 +397,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TodoList/TodoList.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = FV9NULGJG4;
 				INFOPLIST_FILE = "$(SRCROOT)/TodoList/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = io.chuva.TodoList;
+				PRODUCT_BUNDLE_IDENTIFIER = io.ryanStone.TodoList;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -361,13 +416,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TodoList/TodoList.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = FV9NULGJG4;
 				INFOPLIST_FILE = "$(SRCROOT)/TodoList/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = io.chuva.TodoList;
+				PRODUCT_BUNDLE_IDENTIFIER = io.ryanStone.TodoList;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
