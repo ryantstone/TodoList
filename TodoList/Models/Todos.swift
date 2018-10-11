@@ -1,4 +1,5 @@
 import Foundation
+import CloudKit
 
 struct Todos: Codable {
     var items: [Item] {
@@ -41,5 +42,16 @@ extension Todos {
                 group.leave()
             })
         }
+    }
+    func getCompletedItems(success: @escaping ([CKRecord]) -> ()) {
+        let predicate   = NSPredicate(format: "isComplete = 0")
+        let query        = CKQuery(recordType: "item", predicate: predicate)
+        let cloudKitService = CloudKitService()
+        cloudKitService.query(with: query, success: { (records) in
+            print(records)
+            success(records)
+        }, failure: { (error) in
+            print(error)
+        })
     }
 }

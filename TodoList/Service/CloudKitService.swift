@@ -37,4 +37,15 @@ class CloudKitService {
             success(record)
         }
     }
+    public func query(with query: CKQuery,
+                      success: @escaping ([CKRecord]) -> (),
+                      failure: @escaping(Error) -> ()) {
+        privateDb.perform(query, inZoneWith: nil) { (records, error) in
+            guard let records = records, error == nil else {
+                print(error!)
+                return
+            }
+            print(records)
+        }
+    }
 }
