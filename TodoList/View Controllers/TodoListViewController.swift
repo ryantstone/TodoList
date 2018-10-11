@@ -5,11 +5,12 @@ class TodoListViewController: UITableViewController {
     // MARK: - Properties
     private lazy var todos: Todos = {
         let todos = Todos(items: Todos.load().items)
-        let remotes = todos.loadRemote()
-        todos.getCompletedItems(success: { (records) in
-            print("----------------------------------------------")
-            print(records)
-        })
+        todos.subscribeToCompletedItems()
+//        let remotes = todos.loadRemote()
+//        todos.getCompletedItems(success: { (records) in
+//            print("----------------------------------------------")
+//            print(records)
+//        })
         return todos
     }()
     

@@ -43,9 +43,9 @@ extension Todos {
             })
         }
     }
+    
     func getCompletedItems(success: @escaping ([CKRecord]) -> ()) {
-        let predicate   = NSPredicate(format: "isComplete = 0")
-        let query        = CKQuery(recordType: "item", predicate: predicate)
+        let query        = CKQuery(recordType: "item", predicate: isCompletedPredicate())
         let cloudKitService = CloudKitService()
         cloudKitService.query(with: query, success: { (records) in
             print(records)
@@ -53,5 +53,18 @@ extension Todos {
         }, failure: { (error) in
             print(error)
         })
+    }
+    
+    func subscribeToCompletedItems() {
+        let cloudKitService = CloudKitService()
+        cloudKitService.subscribe(with: isCompletedPredicate(), of: "item", success: { (record) in
+            print(record)
+        }) { (error) in
+            print(error)
+        }
+    }
+    
+    func isCompletedPredicate() -> NSPredicate {
+        return NSPredicate(format: "isComplete = 0")
     }
 }

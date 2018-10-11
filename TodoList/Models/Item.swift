@@ -1,7 +1,8 @@
 import Foundation
 import CloudKit
 
-class Item {
+class Item: CKNamed {
+    var ckName = "item"
     let title: String
     var record: CKRecord?
     var recordName: String?
@@ -35,7 +36,7 @@ extension Item: Serializable {
     }
 
     func buildRecord() -> CKRecord {
-        let record = self.record == nil ? CKRecord(recordType: "item") : self.record!
+        let record = self.record == nil ? CloudKitService.init().blankRecord(type: self) : self.record!
         recordName              = record.recordID.recordName
         record["isComplete"]    = isComplete ? 0 : 1
         record["title"]         = title
