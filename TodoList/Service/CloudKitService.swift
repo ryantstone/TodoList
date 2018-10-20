@@ -71,6 +71,13 @@ class CloudKitService {
         }
     }
     
+    public func subscribeToZone() {
+        let sub = CKRecordZoneSubscription(zoneID: zone.zoneID)
+        privateDb.save(sub) { (subscription, error) in
+            print(subscription)
+        }
+    }
+    
     public func blankRecord<T: CKNamed>(type: T) -> CKRecord {
         return CKRecord(recordType: type.ckName, zoneID: zone.zoneID)
     }

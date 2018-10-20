@@ -30,7 +30,7 @@ extension Todos {
     
     func loadRemote() {
         let cloudKitService = CloudKitService()
-        let group = DispatchGroup()
+        let group           = DispatchGroup()
         items.forEach { (item) in
             group.enter()
             guard let name = item.recordName else { return }
