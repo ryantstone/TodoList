@@ -13,7 +13,8 @@ class CloudKitService {
         privateDb   = defaultContainer.privateCloudDatabase
         zone        = CKRecordZone(zoneName: "main")
     }
-    
+
+    // MARK: - Single Records
     public func save(record: CKRecord,
                      success: @escaping (CKRecord) -> (),
                      failure: @escaping (Error) -> ()) {
@@ -26,8 +27,8 @@ class CloudKitService {
             success(record)
         }
     }
-    
-    public func getRecord(name: String,
+
+    public func fetchRecord(name: String,
                           success: @escaping (CKRecord) -> (),
                           failure: @escaping (Error) -> ()) {
         
@@ -40,16 +41,34 @@ class CloudKitService {
             success(record)
         }
     }
-    
+
+    public func fetchAll<T: Serializable>(type: T.Type,
+                         success: @escaping ([T]) -> (),
+                         failure: @escaping (Error) -> ()) {
+
+        let predicate = CKQuery(recordType: T.ckName, predicate: NSPredicate(value: true))
+        query(with: predicate, success: { (records) in
+            success(records.compactMap {
+                do      { return try T.deserialize(record: $0, type: T.self) }
+                catch   {
+                    failure(error)
+                    return nil
+                }
+            })
+        }, failure: {(error) in
+            failure(error)
+        })
+    }
+
     public func query(with query: CKQuery,
                       success: @escaping ([CKRecord]) -> (),
                       failure: @escaping(Error) -> ()) {
         privateDb.perform(query, inZoneWith: nil) { (records, error) in
             guard let records = records, error == nil else {
-                print(error!)
+                failure(error!)
                 return
             }
-            print(records)
+            success(records)
         }
     }
     
@@ -70,15 +89,30 @@ class CloudKitService {
             print(subscription)
         }
     }
-    
+
+    // MARK: - Multiple Records
     public func subscribeToZone() {
         let sub = CKRecordZoneSubscription(zoneID: zone.zoneID)
         privateDb.save(sub) { (subscription, error) in
             print(subscription)
         }
     }
-    
-    public func blankRecord<T: CKNamed>(type: T) -> CKRecord {
-        return CKRecord(recordType: type.ckName, zoneID: zone.zoneID)
+
+    func fetchZone(success: @escaping (CKRecordZone) -> (),
+                   failure: @escaping (Error) -> ()) {
+
+//        privateDb.fetch(withRecordZoneID: zone.zoneID) { (zone, error) in
+//            guard let zone = zone, error == nil else {
+//                failure(error!)
+//                return
+//            }
+//            success(zone)
+//        }
+
+    }
+
+    // MARK: - Utilities
+    public func blankRecord<T: Serializable>(type: T.Type) -> CKRecord {
+        return CKRecord(recordType: T.ckName, zoneID: zone.zoneID)
     }
 }

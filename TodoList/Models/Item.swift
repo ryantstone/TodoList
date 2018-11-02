@@ -1,8 +1,8 @@
 import Foundation
 import CloudKit
 
-class Item: CKNamed {
-    var ckName = "item"
+class Item {
+    static var ckName = "item"
     let title: String
     var record: CKRecord?
     var recordName: String?
@@ -35,8 +35,16 @@ extension Item: Serializable {
         })
     }
 
+    static func deserialize<T: Serializable>(record: CKRecord, type: T.Type) throws -> T {
+        guard let isCompleteIntVal: Int64 = record["isComplete"],
+            let title: String = record["title"] else {
+                throw SerializationError.invalidValues
+        }
+        return Item.init(title: title, isComplete: isCompleteIntVal == 0, record: record) as! T
+    }
+
     func buildRecord() -> CKRecord {
-        let record = self.record == nil ? CloudKitService.init().blankRecord(type: self) : self.record!
+        let record = self.record == nil ? CloudKitService.init().blankRecord(type: Item.self) : self.record!
         recordName              = record.recordID.recordName
         record["isComplete"]    = isComplete ? 0 : 1
         record["title"]         = title

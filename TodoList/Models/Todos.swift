@@ -10,7 +10,26 @@ struct Todos: Codable {
         self.items = items
         loadRemote()
     }
+
+//    public mutating func fetchAll(success: @escaping (Todos)-> (),
+//                                  failure: @escaping (Error) -> ()) {
+//        CloudKitService().fetchAll(type: Item.self, success: { (records) in
+//            guard let todoItems = records as? [Item] else { return }
+//            success(Todos(items: todoItems))
+//        }, failure: { (error) in
+//            failure(error)
+//        })
+//    }
+
+//    mutating func fetchAll() {
+//        CloudKitService().fetchAll(type: Item.self, success: { [self] (records) in
+//           self.items = records
+//        }, failure: { (error) in
+//        })
+//    }
 }
+
+
 //NOTE: UserDefaults is a temporary solution
 extension Todos {
     func save() {
@@ -34,7 +53,7 @@ extension Todos {
         items.forEach { (item) in
             group.enter()
             guard let name = item.recordName else { return }
-            cloudKitService.getRecord(name: name, success: { (record) in
+            cloudKitService.fetchRecord(name: name, success: { (record) in
                 print(record)
                 group.leave()
             }, failure: { (error) in
@@ -63,7 +82,7 @@ extension Todos {
             print(error)
         }
     }
-    
+
     func isCompletedPredicate() -> NSPredicate {
         return NSPredicate(format: "isComplete = 0")
     }

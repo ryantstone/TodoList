@@ -1,16 +1,11 @@
 import UIKit
+import CloudKit
 
 class TodoListViewController: UITableViewController {
 
     // MARK: - Properties
     private lazy var todos: Todos = {
-        let todos = Todos(items: Todos.load().items)
-        todos.subscribeToCompletedItems()
-//        let remotes = todos.loadRemote()
-//        todos.getCompletedItems(success: { (records) in
-//            print("----------------------------------------------")
-//            print(records)
-//        })
+        var todos = Todos(items: [])
         return todos
     }()
     
@@ -23,7 +18,7 @@ class TodoListViewController: UITableViewController {
     // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        fetchTodos()
         setupUI()
     }
     
@@ -40,6 +35,17 @@ class TodoListViewController: UITableViewController {
         tableView.sectionFooterHeight = UITableViewAutomaticDimension
         
         title = NSLocalizedString("My List", comment: "")
+    }
+
+    private func fetchTodos() {
+        CloudKitService().fetchAll(type: Item.self, success: { (records) in
+            self.todos = Todos(items: records)
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }) { (error) in
+            print(error)
+        }
     }
 
     // MARK: - TableView dataSource Delegate
